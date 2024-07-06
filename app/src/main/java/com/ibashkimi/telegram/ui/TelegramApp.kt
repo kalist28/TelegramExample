@@ -4,7 +4,8 @@ import android.app.Activity
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.toArgb
-import androidx.hilt.navigation.compose.hiltNavGraphViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.*
 import com.ibashkimi.telegram.Screen
@@ -28,12 +29,11 @@ fun TelegramApp(activity: Activity) {
 private fun MainNavHost(navController: NavHostController) {
     NavHost(navController, startDestination = Screen.Home.route) {
         composable(Screen.Home.route) {
-            MainScreen(navController = navController, viewModel = hiltNavGraphViewModel(it))
+            MainScreen(navController = navController, viewModel = hiltViewModel(it))
         }
         composable(Screen.Chat.route) {
             val chatId = Screen.Chat.getChatId(it)
-            val viewModel: ChatScreenViewModel =
-                navController.hiltNavGraphViewModel(Screen.Chat.route)
+            val viewModel: ChatScreenViewModel = hiltViewModel(it)
             viewModel.setChatId(chatId)
             ChatScreen(
                 chatId = chatId,
@@ -44,11 +44,11 @@ private fun MainNavHost(navController: NavHostController) {
         composable(Screen.CreateChat.route) {
             CreateChatScreen(
                 navigateUp = navController::navigateUp,
-                viewModel = hiltNavGraphViewModel(it)
+                viewModel = hiltViewModel(it)
             )
         }
         composable(Screen.Login.route) {
-            LoginScreen(hiltNavGraphViewModel(it)) {
+            LoginScreen(hiltViewModel(it)) {
                 navController.navigate(Screen.Home.route) {
                     popUpTo(Screen.Login.route) { inclusive = true }
                 }

@@ -19,7 +19,7 @@ class MessagesRepository @Inject constructor(val client: TelegramClient) {
             client.client.send(TdApi.GetChatHistory(chatId, fromMessageId, 0, limit, false)) {
                 when (it.constructor) {
                     TdApi.Messages.CONSTRUCTOR -> {
-                        offer((it as TdApi.Messages).messages.toList())
+                        trySend((it as TdApi.Messages).messages.toList()).isSuccess
                     }
                     TdApi.Error.CONSTRUCTOR -> {
                         error("")
@@ -39,7 +39,7 @@ class MessagesRepository @Inject constructor(val client: TelegramClient) {
         client.client.send(TdApi.GetMessage(chatId, messageId)) {
             when (it.constructor) {
                 TdApi.Message.CONSTRUCTOR -> {
-                    offer(it as TdApi.Message)
+                    trySend(it as TdApi.Message).isSuccess
                 }
                 TdApi.Error.CONSTRUCTOR -> {
                     error("Something went wrong")

@@ -27,3 +27,7 @@ Thumbs.db
 
 # Keystore files
 /screenshots/.directory
+/_tdlib/build-native-Java/
+/_tdlib/org/
+/_tdlib/SDK/
+/_tdlib/third-party/

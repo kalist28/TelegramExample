@@ -26,7 +26,6 @@ import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
 import com.ibashkimi.telegram.R
 import com.ibashkimi.telegram.data.TelegramClient
 import com.ibashkimi.telegram.ui.util.TelegramImage
@@ -144,7 +143,7 @@ fun ChatHistory(
                 }
             }
         }
-        itemsIndexed(messages) { i, message ->
+        /*itemsIndexed(messages) { i, message ->
             message?.let {
                 val userId = (message.sender as TdApi.MessageSenderUser).userId
                 val previousMessageUserId =
@@ -155,7 +154,7 @@ fun ChatHistory(
                     it
                 )
             }
-        }
+        }*/
     }
 }
 
@@ -189,14 +188,14 @@ private fun MessageItem(
             modifier = Modifier.clickable(onClick = {}) then modifier.fillMaxWidth()
         ) {
             if (!isSameUserFromPreviousMessage) {
-                ChatUserIcon(
+                /*ChatUserIcon(
                     client,
                     (message.sender as TdApi.MessageSenderUser).userId,
                     Modifier
                         .padding(8.dp)
                         .clip(shape = CircleShape)
                         .size(42.dp)
-                )
+                )*/
             } else {
                 Box(
                     Modifier
@@ -247,7 +246,7 @@ private fun MessageItemContent(
 
 @Composable
 private fun ChatUserIcon(client: TelegramClient, userId: Int, modifier: Modifier) {
-    val user = client.send<TdApi.User>(TdApi.GetUser(userId)).collectAsState(initial = null).value
+    val user = client.send<TdApi.User>(TdApi.GetUser(userId.toLong())).collectAsState(initial = null).value
     TelegramImage(client, user?.profilePhoto?.small, modifier = modifier)
 }
 
